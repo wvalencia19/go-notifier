@@ -1,0 +1,85 @@
+run:
+  timeout: 2m
+  issues-exit-code: 1
+  tests: true
+  skip-dirs:
+    - bin
+    - build
+    - configs
+    - githooks
+    - scripts
+    - web
+  modules-download-mode: readonly
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+
+linters-settings:
+  errcheck:
+    check-type-assertions: false
+    check-blank: false
+  gocritic:
+    enabled-tags:
+      - performance
+    settings:
+      captLocal:
+        paramsOnly: true
+      rangeValCopy:
+        sizeThreshold: 32
+  gocyclo:
+    min-complexity: 15
+  gosimple:
+    go: "1.17"
+    checks: [ "all" ]
+  govet:
+    check-shadowing: true
+    settings:
+      printf:
+        funcs:
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+    enable:
+      - atomicalign
+    enable-all: false
+    disable:
+      - shadow
+    disable-all: false
+  misspell:
+    locale: US
+  unused:
+    go: "1.17"
+
+linters:
+  disable-all: true
+  enable:
+    - deadcode
+    - errcheck
+    - gocritic
+    - gocyclo
+    - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    #    - revive
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unused
+    - varcheck
+  fast: false
+
+issues:
+  exclude-rules:
+    - linters:
+        - stylecheck
+      text: "ST1000:"
+  exclude-use-default: false
+  new: false
+  max-same-issues: 10
